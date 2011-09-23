@@ -53,6 +53,12 @@ class Shanty_Mongo_Document extends Shanty_Mongo_Collection implements ArrayAcce
 			$this->setConfigAttribute('collection', static::getCollectionName());
 		}
 		
+		/*
+	     * This has been added so there is no need to tell it if its new or not
+	     */
+		if (isset($data['_id']) && $data['_id'] instanceof MongoId)
+		  $this->_config['new'] = false;
+		
 		// Get collection requirements
 		$this->_docRequirements = static::getCollectionRequirements();
 		

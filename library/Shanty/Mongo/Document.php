@@ -951,7 +951,7 @@ class Shanty_Mongo_Document extends Shanty_Mongo_Collection implements ArrayAcce
 			}
 		}
 		
-		$result = $this->_getMongoCollection(true)->update($this->getCriteria(), $operations, array('upsert' => true, 'safe' => $safe));
+		$result = $this->_getMongoCollection(true)->update($this->getCriteria(), $operations, array('upsert' => true, 'w' => (int)$safe));
 		$this->_data = array();
 		$this->_cleanData = $exportData;
 		$this->purgeOperations(true);
@@ -1002,10 +1002,10 @@ class Shanty_Mongo_Document extends Shanty_Mongo_Collection implements ArrayAcce
 		$this->preDelete();
 		
 		if (!$this->isRootDocument()) {
-			$result = $mongoCollection->update($this->getCriteria(), array('$unset' => array($this->getPathToDocument() => 1)), array('safe' => $safe));
+			$result = $mongoCollection->update($this->getCriteria(), array('$unset' => array($this->getPathToDocument() => 1)), array('w' => (int)$safe));
 		}
 		else {
-			$result = $mongoCollection->remove($this->getCriteria(), array('justOne' => true, 'safe' => $safe));
+			$result = $mongoCollection->remove($this->getCriteria(), array('justOne' => true, 'w' => (int)$safe));
 		}
 		
 		// Execute post delete hook
